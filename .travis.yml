@@ -19,8 +19,8 @@ script:
   Type=Application
   Name=Dexed
   Comment=FM synth that is closely modeled on the Yamaha DX7
-  Exec=Symphonium
-  Icon=symphonium
+  Exec=Dexed
+  Icon=dexed
   Categories=AudioVideo;Audio;Music;
   EOF
 - find .
