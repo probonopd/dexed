@@ -10,6 +10,7 @@ script:
 - mkdir -p appdir/usr/bin
 - mkdir -p appdir/usr/share/icons/hicolor/256x256/apps
 - convert ../../Resources/ui/dexedIcon.png -resize 256x256 appdir/usr/share/icons/hicolor/256x256/apps/dexed.png
+- mkdir -p appdir/usr/share/icons/hicolor/256x256/apps/
 - cp appdir/usr/share/icons/hicolor/256x256/apps/dexed.png appdir/
 
 after_success:
