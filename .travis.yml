@@ -12,6 +12,18 @@ script:
 - convert ../../Resources/ui/dexedIcon.png -resize 256x256 appdir/usr/share/icons/hicolor/256x256/apps/dexed.png
 - mkdir -p appdir/usr/share/icons/hicolor/256x256/apps/
 - cp appdir/usr/share/icons/hicolor/256x256/apps/dexed.png appdir/
+- mkdir -p appdir/usr/share/applications/
+- |2
+  cat > appdir/usr/share/applications/dexed.desktop <<\EOF
+  [Desktop Entry]
+  Type=Application
+  Name=Dexed
+  Comment=FM synth that is closely modeled on the Yamaha DX7
+  Exec=Symphonium
+  Icon=symphonium
+  Categories=AudioVideo;Audio;Music;
+  EOF
+- find .
 - wget -c -nv "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
 - chmod a+x linuxdeployqt-continuous-x86_64.AppImage
 - ./linuxdeployqt-continuous-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
