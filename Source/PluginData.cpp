@@ -329,6 +329,9 @@ void DexedAudioProcessor::getStateInformation(MemoryBlock& destData) {
     dexedState.setAttribute("currentProgram", currentProgram);
     dexedState.setAttribute("monoMode", monoMode);
     dexedState.setAttribute("engineType", (int) engineType);
+    dexedState.setAttribute("pitchRangeUp", controllers.pitchRangeUp);
+    dexedState.setAttribute("pitchRangeDn", controllers.pitchRangeDn);
+    dexedState.setAttribute("pitchStep", controllers.pitchStep);    
     dexedState.setAttribute("masterTune", controllers.masterTune);
     //TRACE("saving opswitch %s", controllers.opSwitch);
     dexedState.setAttribute("opSwitch", controllers.opSwitch);
@@ -409,6 +412,9 @@ void DexedAudioProcessor::setStateInformation(const void* source, int sizeInByte
     controllers.refresh();
     
     setEngineType(root->getIntAttribute("engineType", 1));
+    controllers.pitchRangeUp = ( root->getIntAttribute("pitchRangeUp", 3) );
+    controllers.pitchRangeDn = ( root->pitchRangeDn("pitchRangeDn", 3) );
+    controllers.pitchStep = ( root->pitchRangeDn("pitchStep", 0) );
     monoMode = root->getIntAttribute("monoMode", 0);
     controllers.masterTune = root->getIntAttribute("masterTune", 0);
     controllers.transpose12AsScale = ( root->getIntAttribute("transpose12AsScale", 1) != 0 );
