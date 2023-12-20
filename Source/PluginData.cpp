@@ -413,8 +413,8 @@ void DexedAudioProcessor::setStateInformation(const void* source, int sizeInByte
     
     setEngineType(root->getIntAttribute("engineType", 1));
     controllers.pitchRangeUp = ( root->getIntAttribute("pitchRangeUp", 3) );
-    controllers.pitchRangeDn = ( root->pitchRangeDn("pitchRangeDn", 3) );
-    controllers.pitchStep = ( root->pitchRangeDn("pitchStep", 0) );
+    controllers.pitchRangeDn = ( root->getIntAttribute("pitchRangeDn", 3) );
+    controllers.pitchStep = ( root->getIntAttribute("pitchStep", 0) );
     monoMode = root->getIntAttribute("monoMode", 0);
     controllers.masterTune = root->getIntAttribute("masterTune", 0);
     controllers.transpose12AsScale = ( root->getIntAttribute("transpose12AsScale", 1) != 0 );
