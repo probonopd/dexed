@@ -28,6 +28,10 @@ set(DEXED_JUCE_PATH "${CMAKE_SOURCE_DIR}/libs/JUCE" CACHE STRING "Path to JUCE l
 add_subdirectory(${DEXED_JUCE_PATH} ${CMAKE_BINARY_DIR}/JUCE EXCLUDE_FROM_ALL)
 add_subdirectory(libs/clap-juce-extensions EXCLUDE_FROM_ALL)
 
+# Add JUCE include directories
+include_directories(${DEXED_JUCE_PATH})
+include_directories(${DEXED_JUCE_PATH}/modules)
+
 #Adds all the module sources so they appear correctly in the IDE
 set_property(GLOBAL PROPERTY USE_FOLDERS YES)
 option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Enable Module Source Groups" ON)

@@ -45,7 +45,7 @@ class ParamDialog  : public Component,
 {
 public:
     //==============================================================================
-    ParamDialog ();
+    explicit ParamDialog(Controllers &controllers);
     ~ParamDialog() override;
 
     //==============================================================================
@@ -124,4 +124,5 @@ private:
 
 //[EndFile] You can add extra defines here...
 //[/EndFile]
+``` 
 
