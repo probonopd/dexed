@@ -426,8 +426,8 @@ void DexedAudioProcessor::setStateInformation(const void* source, int sizeInByte
     
     // Load per-instance preferences
     controllers.normalizeDxVelocity = root->getIntAttribute("normalizeDxVelocity", 0);
-    controllers.sysexIn = root->getStringAttribute("sysexIn", "");
-    controllers.sysexOut = root->getStringAttribute("sysexOut", "");
+    controllers.sysexIn = root->getStringAttribute("sysexIn", "").toStdString();
+    controllers.sysexOut = root->getStringAttribute("sysexOut", "").toStdString();
     controllers.sysexChl = root->getIntAttribute("sysexChl", 1);
     controllers.engineType = root->getIntAttribute("engineType", 1);
     controllers.showKeyboard = root->getIntAttribute("showKeyboard", 1);

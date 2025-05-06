@@ -108,6 +108,8 @@ public:
     int pitchRangeDn = 1;  // Default value
     int pitchStep = 0;     // Default value
 
+    bool normalizeDxVelocity = false;
+
     std::string sysexIn;
     std::string sysexOut;
     int sysexChl = 1;
