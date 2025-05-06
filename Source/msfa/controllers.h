@@ -106,6 +106,13 @@ public:
     int pitchRangeUp = 0;  // Default value
     int pitchRangeDn = 1;  // Default value
     int pitchStep = 0;     // Default value
+
+    std::string sysexIn;
+    std::string sysexOut;
+    int sysexChl = 1;
+    int engineType = 1;
+    bool showKeyboard = true;
+    double dpiScaleFactor = 1.0;
     
     Controllers() {
         amp_mod = 0;
