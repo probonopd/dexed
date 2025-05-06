@@ -492,7 +492,64 @@ void DexedAudioProcessor::initCtrl() {
     
     tune.reset(new CtrlTune("MASTER TUNE ADJ", this));
     ctrl.add(tune.get());
-    
+
+    // --- BEGIN: Add all global/controller/tuning parameters as plugin parameters ---
+    // Pitch Bend Range Up/Down/Step
+    pitchRangeUp.reset(new CtrlDX("PITCH BEND RANGE UP", 48, -1));
+    ctrl.add(pitchRangeUp.get());
+    pitchRangeDn.reset(new CtrlDX("PITCH BEND RANGE DOWN", 48, -1));
+    ctrl.add(pitchRangeDn.get());
+    pitchStep.reset(new CtrlDX("PITCH BEND STEP", 12, -1));
+    ctrl.add(pitchStep.get());
+
+    // Mod Wheel, Foot, Breath, Aftertouch Ranges and Assignments
+    whlRange.reset(new CtrlDX("MOD WHEEL RANGE", 99, -1));
+    ctrl.add(whlRange.get());
+    whlPitch.reset(new CtrlDXSwitch("MOD WHEEL PITCH", 1, -1));
+    ctrl.add(whlPitch.get());
+    whlAmp.reset(new CtrlDXSwitch("MOD WHEEL AMP", 1, -1));
+    ctrl.add(whlAmp.get());
+    whlEg.reset(new CtrlDXSwitch("MOD WHEEL EG", 1, -1));
+    ctrl.add(whlEg.get());
+
+    ftRange.reset(new CtrlDX("FOOT RANGE", 99, -1));
+    ctrl.add(ftRange.get());
+    ftPitch.reset(new CtrlDXSwitch("FOOT PITCH", 1, -1));
+    ctrl.add(ftPitch.get());
+    ftAmp.reset(new CtrlDXSwitch("FOOT AMP", 1, -1));
+    ctrl.add(ftAmp.get());
+    ftEg.reset(new CtrlDXSwitch("FOOT EG", 1, -1));
+    ctrl.add(ftEg.get());
+
+    brRange.reset(new CtrlDX("BREATH RANGE", 99, -1));
+    ctrl.add(brRange.get());
+    brPitch.reset(new CtrlDXSwitch("BREATH PITCH", 1, -1));
+    ctrl.add(brPitch.get());
+    brAmp.reset(new CtrlDXSwitch("BREATH AMP", 1, -1));
+    ctrl.add(brAmp.get());
+    brEg.reset(new CtrlDXSwitch("BREATH EG", 1, -1));
+    ctrl.add(brEg.get());
+
+    atRange.reset(new CtrlDX("AFTERTOUCH RANGE", 99, -1));
+    ctrl.add(atRange.get());
+    atPitch.reset(new CtrlDXSwitch("AFTERTOUCH PITCH", 1, -1));
+    ctrl.add(atPitch.get());
+    atAmp.reset(new CtrlDXSwitch("AFTERTOUCH AMP", 1, -1));
+    ctrl.add(atAmp.get());
+    atEg.reset(new CtrlDXSwitch("AFTERTOUCH EG", 1, -1));
+    ctrl.add(atEg.get());
+
+    // Transpose as Scale toggle
+    transpose12AsScaleCtrl.reset(new CtrlDXSwitch("TRANSPOSE 12 AS SCALE", 1, -1));
+    ctrl.add(transpose12AsScaleCtrl.get());
+
+    // MPE
+    mpeEnabledCtrl.reset(new CtrlDXSwitch("MPE ENABLED", 1, -1));
+    ctrl.add(mpeEnabledCtrl.get());
+    mpePitchBendRangeCtrl.reset(new CtrlDX("MPE PITCH BEND RANGE", 96, -1));
+    ctrl.add(mpePitchBendRangeCtrl.get());
+    // --- END: Add all global/controller/tuning parameters as plugin parameters ---
+
     algo.reset(new CtrlDX("ALGORITHM", 31, 134, 1));
     ctrl.add(algo.get());
     
