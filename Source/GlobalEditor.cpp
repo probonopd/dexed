@@ -716,12 +716,12 @@ void GlobalEditor::buttonClicked (juce::Button* buttonThatWasClicked)
 
 void GlobalEditor::bind(DexedAudioProcessorEditor *edit) {
     processor = edit->processor;
-	processor->algo->bind(algo.get());
-	processor->lfoRate->bind(lfoSpeed.get());
-	processor->lfoDelay->bind(lfoDelay.get());
-	processor->lfoWaveform->bind(lfoType.get());
-	processor->lfoAmpDepth->bind(lfoAmDepth.get());
-	processor->lfoPitchDepth->bind(lfoPitchDepth.get());
+    processor->algo->bind(algo.get());
+    processor->lfoRate->bind(lfoSpeed.get());
+    processor->lfoDelay->bind(lfoDelay.get());
+    processor->lfoWaveform->bind(lfoType.get());
+    processor->lfoAmpDepth->bind(lfoAmDepth.get());
+    processor->lfoPitchDepth->bind(lfoPitchDepth.get());
     processor->lfoSync->bind(lfoSync.get());
     processor->oscSync->bind(oscSync.get());
     processor->transpose->bind(transpose.get());
@@ -740,6 +740,29 @@ void GlobalEditor::bind(DexedAudioProcessorEditor *edit) {
     processor->output->bind(output.get());
     processor->tune->bind(tune.get());
     processor->monoModeCtrl->bind(monoMode.get());
+    // Bind global/controller/tuning/MPE parameters for DAW automation and per-instance recall
+    processor->pitchRangeUp->bind(nullptr); // No direct UI in GlobalEditor
+    processor->pitchRangeDn->bind(nullptr);
+    processor->pitchStep->bind(nullptr);
+    processor->whlRange->bind(nullptr);
+    processor->whlPitch->bind(nullptr);
+    processor->whlAmp->bind(nullptr);
+    processor->whlEg->bind(nullptr);
+    processor->ftRange->bind(nullptr);
+    processor->ftPitch->bind(nullptr);
+    processor->ftAmp->bind(nullptr);
+    processor->ftEg->bind(nullptr);
+    processor->brRange->bind(nullptr);
+    processor->brPitch->bind(nullptr);
+    processor->brAmp->bind(nullptr);
+    processor->brEg->bind(nullptr);
+    processor->atRange->bind(nullptr);
+    processor->atPitch->bind(nullptr);
+    processor->atAmp->bind(nullptr);
+    processor->atEg->bind(nullptr);
+    processor->transpose12AsScaleCtrl->bind(nullptr);
+    processor->mpeEnabledCtrl->bind(nullptr);
+    processor->mpePitchBendRangeCtrl->bind(nullptr);
 
     algoDisplay->algo = (char *) &(processor->data[134]);
     pitchEnvDisplay->pvalues = &(processor->data[126]);

@@ -439,6 +439,32 @@ ParamDialog::ParamDialog(Controllers &controllers)
     pitchRangeUp->setValue(controllers.pitchRangeUp, juce::dontSendNotification);
     pitchRangeDn->setValue(controllers.pitchRangeDn, juce::dontSendNotification);
     pitchStep->setValue(controllers.pitchStep, juce::dontSendNotification);
+
+    // Bind UI controls to plugin parameter objects for automation and per-instance recall
+    if (processor) {
+        processor->pitchRangeUp->bind(pitchRangeUp.get());
+        processor->pitchRangeDn->bind(pitchRangeDn.get());
+        processor->pitchStep->bind(pitchStep.get());
+        processor->whlRange->bind(whlRange.get());
+        processor->whlPitch->bind(whlPitch.get());
+        processor->whlAmp->bind(whlAmp.get());
+        processor->whlEg->bind(whlEg.get());
+        processor->ftRange->bind(ftRange.get());
+        processor->ftPitch->bind(ftPitch.get());
+        processor->ftAmp->bind(ftAmp.get());
+        processor->ftEg->bind(ftEg.get());
+        processor->brRange->bind(brRange.get());
+        processor->brPitch->bind(brPitch.get());
+        processor->brAmp->bind(brAmp.get());
+        processor->brEg->bind(brEg.get());
+        processor->atRange->bind(atRange.get());
+        processor->atPitch->bind(atPitch.get());
+        processor->atAmp->bind(atAmp.get());
+        processor->atEg->bind(atEg.get());
+        processor->transpose12AsScaleCtrl->bind(transposeScale.get());
+        processor->mpeEnabledCtrl->bind(mpeEnabled.get());
+        processor->mpePitchBendRangeCtrl->bind(mpePBRange.get());
+    }
     //[/Constructor]
 }
 
