@@ -102,6 +102,10 @@ public:
     FmMod foot;
     FmMod breath;
     FmMod at;
+
+    int pitchRangeUp = 0;  // Default value
+    int pitchRangeDn = 1;  // Default value
+    int pitchStep = 0;     // Default value
     
     Controllers() {
         amp_mod = 0;

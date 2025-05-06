@@ -106,6 +106,10 @@ DexedAudioProcessor::DexedAudioProcessor()
     controllers.values_[kControllerPitchRangeDn] = 3;
     controllers.values_[kControllerPitchStep] = 0;
     controllers.masterTune = 0;
+
+    controllers.pitchRangeUp = 0;
+    controllers.pitchRangeDn = 1;
+    controllers.pitchStep = 0;
     
     loadPreference();
 

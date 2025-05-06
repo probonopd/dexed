@@ -331,6 +331,10 @@ void DexedAudioProcessor::getStateInformation(MemoryBlock& destData) {
     dexedState.setAttribute("transpose12AsScale", controllers.transpose12AsScale ? 1 : 0 );
     dexedState.setAttribute("mpeEnabled", controllers.mpeEnabled ? 1 : 0 );
     dexedState.setAttribute("mpePitchBendRange", controllers.mpePitchBendRange );
+    // Add saving of new parameters to the state
+    dexedState.setAttribute("pitchRangeUp", controllers.pitchRangeUp);
+    dexedState.setAttribute("pitchRangeDn", controllers.pitchRangeDn);
+    dexedState.setAttribute("pitchStep", controllers.pitchStep);
     
     char mod_cfg[15];
     controllers.wheel.setConfig(mod_cfg);
@@ -411,6 +415,11 @@ void DexedAudioProcessor::setStateInformation(const void* source, int sizeInByte
 
     controllers.mpePitchBendRange = ( root->getIntAttribute("mpePitchBendRange", 24) );
     controllers.mpeEnabled = ( root->getIntAttribute("mpeEnabled", 0) != 0 );
+
+    // Add loading of new parameters from the state
+    controllers.pitchRangeUp = root->getIntAttribute("pitchRangeUp", 0);
+    controllers.pitchRangeDn = root->getIntAttribute("pitchRangeDn", 1);
+    controllers.pitchStep = root->getIntAttribute("pitchStep", 0);
     
     File possibleCartridge = File(root->getStringAttribute("activeFileCartridge"));
     if ( possibleCartridge.exists() )
