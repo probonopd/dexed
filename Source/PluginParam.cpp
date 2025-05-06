@@ -779,18 +779,20 @@ void DexedAudioProcessor::loadPreference() {
         normalizeDxVelocity = prop.getIntValue( String("normalizeDxVelocity") );
     }
     
-    if ( prop.containsKey( String("pitchRange") ) ) {
-        controllers.values_[kControllerPitchRangeUp] = prop.getIntValue( String("pitchRange") );
+    // Ensure per-instance settings take precedence over global settings
+    if (prop.containsKey(String("pitchRange"))) {
+        controllers.values_[kControllerPitchRangeUp] = prop.getIntValue(String("pitchRange"));
+    }
+    if (prop.containsKey(String("pitchRangeUp"))) {
+        controllers.values_[kControllerPitchRangeUp] = prop.getIntValue(String("pitchRangeUp"));
+    }
+    if (prop.containsKey(String("pitchRangeDn"))) {
+        controllers.values_[kControllerPitchRangeDn] = prop.getIntValue(String("pitchRangeDn"));
     }
     
-    if ( prop.containsKey( String("pitchRangeDn") ) ) {
-        controllers.values_[kControllerPitchRangeDn] = prop.getIntValue( String("pitchRangeDn") );
-    } else {
-        controllers.values_[kControllerPitchRangeDn] = controllers.values_[kControllerPitchRangeUp];
-    }
-    
-    if ( prop.containsKey( String("pitchStep") ) ) {
-        controllers.values_[kControllerPitchStep] = prop.getIntValue( String("pitchStep") );
+    // Ensure per-instance settings take precedence over global settings for pitchStep
+    if (prop.containsKey(String("pitchStep"))) {
+        controllers.values_[kControllerPitchStep] = prop.getIntValue(String("pitchStep"));
     }
     
     if ( prop.containsKey( String("sysexIn") ) ) {
