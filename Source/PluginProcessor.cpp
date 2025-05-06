@@ -236,7 +236,11 @@ void DexedAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& mi
     keyboardState.processNextMidiBuffer(midiMessages, 0, numSamples, true);
     
     MidiBuffer::Iterator it(midiMessages);
-    hasMidiMessage = it.getNextEvent(*nextMidi,midiEventPos);
+    int eventSamplePos = 0;
+    MidiMessage eventMsg;
+    hasMidiMessage = it.getNextEvent(eventMsg, eventSamplePos);
+    *nextMidi = eventMsg;
+    midiEventPos = eventSamplePos;
 
     float *channelData = buffer.getWritePointer(0);
   
@@ -253,7 +257,7 @@ void DexedAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& mi
         extra_buf_size -= numSamples;
         
         // flush the events, they will be process in the next cycle
-        while(getNextEvent(&it, numSamples)) {
+        while(getNextEvent(midiMessages, midiEventPos, *midiMsg)) {
             processMidiMessage(midiMsg);
         }
     } else {
@@ -261,7 +265,7 @@ void DexedAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& mi
             AlignedBuf<int32_t, N> audiobuf;
             float sumbuf[N];
             
-            while(getNextEvent(&it, i)) {
+            while(getNextEvent(midiMessages, i, *midiMsg)) {
                 processMidiMessage(midiMsg);
             }
             
@@ -309,7 +313,7 @@ void DexedAudioProcessor::processBlock(AudioSampleBuffer& buffer, MidiBuffer& mi
         extra_buf_size = i - numSamples;
     }
     
-    while(getNextEvent(&it, numSamples)) {
+    while(getNextEvent(midiMessages, numSamples, *midiMsg)) {
         processMidiMessage(midiMsg);
     }
 
@@ -337,13 +341,16 @@ AudioProcessor* JUCE_CALLTYPE createPluginFilter() {
     return new DexedAudioProcessor();
 }
 
-bool DexedAudioProcessor::getNextEvent(MidiBuffer::Iterator* iter,const int samplePos) {
-	if (hasMidiMessage && midiEventPos <= samplePos) {
-		*midiMsg = *nextMidi;
-		hasMidiMessage = iter->getNextEvent(*nextMidi, midiEventPos);
-		return true;
-	}
-	return false;
+bool DexedAudioProcessor::getNextEvent(MidiBuffer& buffer, int& samplePos, MidiMessage& message) {
+    if (hasMidiMessage && midiEventPos <= samplePos) {
+        message = *nextMidi;
+        MidiBuffer::Iterator it(buffer);
+        hasMidiMessage = it.getNextEvent(message, midiEventPos);
+        *nextMidi = message;
+        samplePos = midiEventPos;
+        return true;
+    }
+    return false;
 }
 
 void DexedAudioProcessor::processMidiMessage(const MidiMessage *msg) {
