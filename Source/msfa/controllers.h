@@ -19,8 +19,9 @@
 
 #include "synth.h"
 #include "../Dexed.h"
-#include <stdio.h>
+#include <string>
 #include <string.h>
+#include <stdio.h>
 
 #ifdef _WIN32
 #define snprintf _snprintf

@@ -119,7 +119,7 @@ class DexedAudioProcessor  : public AudioProcessor, public AsyncUpdater, public 
 	MidiMessage* nextMidi,*midiMsg;
 	bool hasMidiMessage;
     int midiEventPos;
-	bool getNextEvent(MidiBuffer::Iterator* iter,const int samplePos);
+	bool getNextEvent(MidiBuffer& buffer, int& samplePos, MidiMessage& message);
     
     void handleIncomingMidiMessage(MidiInput* source, const MidiMessage& message) override;
     uint32_t engineType;
