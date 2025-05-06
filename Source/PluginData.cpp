@@ -320,22 +320,24 @@ void DexedAudioProcessor::getStateInformation(MemoryBlock& destData) {
     XmlElement dexedState("dexedState");
     XmlElement *dexedBlob = dexedState.createNewChildElement("dexedBlob");
     
+    // Save per-instance FX parameters
     dexedState.setAttribute("cutoff", fx.uiCutoff);
     dexedState.setAttribute("reso", fx.uiReso);
     dexedState.setAttribute("gain", fx.uiGain);
+
+    // Save per-instance program and engine settings
     dexedState.setAttribute("currentProgram", currentProgram);
-    dexedState.setAttribute("engineType", (int) engineType);
+
+    // Save per-instance controllers
     dexedState.setAttribute("masterTune", controllers.masterTune);
-    //TRACE("saving opswitch %s", controllers.opSwitch);
     dexedState.setAttribute("opSwitch", controllers.opSwitch);
-    dexedState.setAttribute("transpose12AsScale", controllers.transpose12AsScale ? 1 : 0 );
-    dexedState.setAttribute("mpeEnabled", controllers.mpeEnabled ? 1 : 0 );
-    dexedState.setAttribute("mpePitchBendRange", controllers.mpePitchBendRange );
-    // Add saving of new parameters to the state
+
+    // Save per-instance pitch parameters
     dexedState.setAttribute("pitchRangeUp", controllers.pitchRangeUp);
     dexedState.setAttribute("pitchRangeDn", controllers.pitchRangeDn);
     dexedState.setAttribute("pitchStep", controllers.pitchStep);
-    
+
+    // Save per-instance modulation parameters
     char mod_cfg[15];
     controllers.wheel.setConfig(mod_cfg);
     dexedState.setAttribute("wheelMod", mod_cfg);
@@ -345,6 +347,15 @@ void DexedAudioProcessor::getStateInformation(MemoryBlock& destData) {
     dexedState.setAttribute("breathMod", mod_cfg);
     controllers.at.setConfig(mod_cfg);
     dexedState.setAttribute("aftertouchMod", mod_cfg);
+
+    // Save per-instance preferences
+    dexedState.setAttribute("normalizeDxVelocity", controllers.normalizeDxVelocity);
+    dexedState.setAttribute("sysexIn", controllers.sysexIn);
+    dexedState.setAttribute("sysexOut", controllers.sysexOut);
+    dexedState.setAttribute("sysexChl", controllers.sysexChl);
+    dexedState.setAttribute("engineType", controllers.engineType);
+    dexedState.setAttribute("showKeyboard", controllers.showKeyboard);
+    dexedState.setAttribute("dpiScaleFactor", controllers.dpiScaleFactor);
 
     if( currentSCLData.size() > 1 || currentKBMData.size() > 1 )
     {
@@ -388,26 +399,42 @@ void DexedAudioProcessor::setStateInformation(const void* source, int sizeInByte
         return;
     }
     
-    fx.uiCutoff = root->getDoubleAttribute("cutoff");
-    fx.uiReso = root->getDoubleAttribute("reso");
-    fx.uiGain = root->getDoubleAttribute("gain");
-    currentProgram = root->getIntAttribute("currentProgram");
-    
-    String opSwitchValue = root->getStringAttribute("opSwitch");
-    //TRACE("opSwitch value %s", opSwitchValue.toRawUTF8());
-    if ( opSwitchValue.length() != 6 ) {
-        strcpy(controllers.opSwitch, "111111");
-    } else {
-        strncpy(controllers.opSwitch, opSwitchValue.toRawUTF8(), 6);
-    }
-    
+    // Load per-instance FX parameters
+    fx.uiCutoff = root->getDoubleAttribute("cutoff", 0.0f);
+    fx.uiReso = root->getDoubleAttribute("reso", 0.0f);
+    fx.uiGain = root->getDoubleAttribute("gain", 0.0f);
+
+    // Load per-instance program and engine settings
+    currentProgram = root->getIntAttribute("currentProgram", 0);
+
+    // Load per-instance controllers
+    controllers.masterTune = root->getIntAttribute("masterTune", 0);
+    strcpy(controllers.opSwitch, root->getStringAttribute("opSwitch", "111111").toRawUTF8());
+
+    // Load per-instance pitch parameters
+    controllers.pitchRangeUp = root->getIntAttribute("pitchRangeUp", 0);
+    controllers.pitchRangeDn = root->getIntAttribute("pitchRangeDn", 1);
+    controllers.pitchStep = root->getIntAttribute("pitchStep", 0);
+
+    // Load per-instance modulation parameters
     controllers.wheel.parseConfig(root->getStringAttribute("wheelMod").toRawUTF8());
     controllers.foot.parseConfig(root->getStringAttribute("footMod").toRawUTF8());
     controllers.breath.parseConfig(root->getStringAttribute("breathMod").toRawUTF8());
     controllers.at.parseConfig(root->getStringAttribute("aftertouchMod").toRawUTF8());
-    
+
     controllers.refresh();
     
+    // Load per-instance preferences
+    controllers.normalizeDxVelocity = root->getIntAttribute("normalizeDxVelocity", 0);
+    controllers.sysexIn = root->getStringAttribute("sysexIn", "");
+    controllers.sysexOut = root->getStringAttribute("sysexOut", "");
+    controllers.sysexChl = root->getIntAttribute("sysexChl", 1);
+    controllers.engineType = root->getIntAttribute("engineType", 1);
+    controllers.showKeyboard = root->getIntAttribute("showKeyboard", 1);
+    controllers.dpiScaleFactor = root->getDoubleAttribute("dpiScaleFactor", 1.0);
+
+    // Per-instance settings are loaded here and overwrite any global defaults loaded earlier.
+    // This ensures that each instance of the plugin maintains its own unique state.
     setEngineType(root->getIntAttribute("engineType", 1));
     monoMode = root->getIntAttribute("monoMode", 0);
     controllers.masterTune = root->getIntAttribute("masterTune", 0);
@@ -416,11 +443,6 @@ void DexedAudioProcessor::setStateInformation(const void* source, int sizeInByte
     controllers.mpePitchBendRange = ( root->getIntAttribute("mpePitchBendRange", 24) );
     controllers.mpeEnabled = ( root->getIntAttribute("mpeEnabled", 0) != 0 );
 
-    // Add loading of new parameters from the state
-    controllers.pitchRangeUp = root->getIntAttribute("pitchRangeUp", 0);
-    controllers.pitchRangeDn = root->getIntAttribute("pitchRangeDn", 1);
-    controllers.pitchStep = root->getIntAttribute("pitchStep", 0);
-    
     File possibleCartridge = File(root->getStringAttribute("activeFileCartridge"));
     if ( possibleCartridge.exists() )
         activeFileCartridge = possibleCartridge;

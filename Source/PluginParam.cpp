@@ -774,12 +774,10 @@ void DexedAudioProcessor::loadPreference() {
     if ( ! prop.isValidFile() ) {
         return;
     }
-    
-    if ( prop.containsKey( String("normalizeDxVelocity") ) ) {
-        normalizeDxVelocity = prop.getIntValue( String("normalizeDxVelocity") );
-    }
-    
-    // Ensure per-instance settings take precedence over global settings
+
+    // Global settings are loaded here from Dexed.xml. These settings act as defaults.
+    // If per-instance settings are available, they will overwrite these defaults later.
+    // This ensures that per-instance settings always take precedence.
     if (prop.containsKey(String("pitchRange"))) {
         controllers.values_[kControllerPitchRangeUp] = prop.getIntValue(String("pitchRange"));
     }
@@ -795,26 +793,6 @@ void DexedAudioProcessor::loadPreference() {
         controllers.values_[kControllerPitchStep] = prop.getIntValue(String("pitchStep"));
     }
     
-    if ( prop.containsKey( String("sysexIn") ) ) {
-        sysexComm.setInput( prop.getValue("sysexIn") );
-    }
-    
-    if ( prop.containsKey( String("sysexOut") ) ) {
-        sysexComm.setOutput( prop.getValue("sysexOut") );
-    }
-    
-    if ( prop.containsKey( String("sysexChl") ) ) {
-        sysexComm.setChl( prop.getIntValue( String("sysexChl") ) );
-    }
-    
-    if ( prop.containsKey( String("engineType") ) ) {
-        setEngineType(prop.getIntValue(String("engineType")));
-    }
-
-    if ( prop.containsKey( String("showKeyboard") ) ) {
-        showKeyboard = prop.getIntValue( String("showKeyboard") );
-    }
-
     if ( prop.containsKey( String("wheelMod") ) ) {
         controllers.wheel.parseConfig(prop.getValue(String("wheelMod")).toRawUTF8());
     }
@@ -831,10 +809,6 @@ void DexedAudioProcessor::loadPreference() {
         controllers.at.parseConfig(prop.getValue(String("aftertouchMod")).toRawUTF8());
     }
     
-    if ( prop.containsKey( String("dpiScaleFactor") ) ) {
-        dpiScaleFactor = prop.getDoubleValue(String("dpiScaleFactor"));
-    }
-    
     controllers.refresh();
 }
 
@@ -843,7 +817,6 @@ void DexedAudioProcessor::savePreference() {
     PropertiesFile::Options prefOptions;
     PropertiesFile prop(propFile, prefOptions);
     
-    prop.setValue(String("normalizeDxVelocity"), normalizeDxVelocity);
     prop.setValue(String("pitchRange"), controllers.values_[kControllerPitchRangeUp]); // for backwards compat
     prop.setValue(String("pitchRangeUp"), controllers.values_[kControllerPitchRangeUp]);
     prop.setValue(String("pitchRangeDn"), controllers.values_[kControllerPitchRangeDn]);
@@ -864,9 +837,6 @@ void DexedAudioProcessor::savePreference() {
     prop.setValue(String("breathMod"), mod_cfg);
     controllers.at.setConfig(mod_cfg);
     prop.setValue(String("aftertouchMod"), mod_cfg);
-    
-    prop.setValue(String("engineType"), (int) engineType);
-    prop.setValue(String("dpiScaleFactor"), dpiScaleFactor);
     
     prop.save();
 }

@@ -110,6 +110,29 @@ DexedAudioProcessor::DexedAudioProcessor()
     controllers.pitchRangeUp = 0;
     controllers.pitchRangeDn = 1;
     controllers.pitchStep = 0;
+
+    // Ensure per-instance isolation for FX parameters
+    fx.uiCutoff = 0.0f;
+    fx.uiReso = 0.0f;
+    fx.uiGain = 0.0f;
+
+    // Ensure per-instance isolation for program and engine settings
+    currentProgram = 0;
+
+    // Ensure per-instance isolation for controllers
+    controllers.masterTune = 0;
+    strcpy(controllers.opSwitch, "111111");
+
+    // Ensure per-instance isolation for pitch parameters
+    controllers.pitchRangeUp = 0;
+    controllers.pitchRangeDn = 1;
+    controllers.pitchStep = 0;
+
+    // Ensure per-instance isolation for modulation parameters
+    controllers.wheel.range = 0;
+    controllers.foot.range = 0;
+    controllers.breath.range = 0;
+    controllers.at.range = 0;
     
     loadPreference();
 

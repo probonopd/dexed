@@ -436,6 +436,11 @@ ParamDialog::ParamDialog ()
 
     setWantsKeyboardFocus(true);
     startTimer(100);
+
+    // Synchronize UI elements with per-instance state
+    pitchRangeUp->setValue(controllers.pitchRangeUp, juce::dontSendNotification);
+    pitchRangeDn->setValue(controllers.pitchRangeDn, juce::dontSendNotification);
+    pitchStep->setValue(controllers.pitchStep, juce::dontSendNotification);
     //[/Constructor]
 }
 
