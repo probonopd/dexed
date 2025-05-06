@@ -1,6 +1,7 @@
 name: dexed-pipeline
 
 on:
+  dispatch:
   push:
     branches: [ master ]
     tags:
