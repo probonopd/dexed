@@ -29,38 +29,30 @@
 //[/MiscUserDefs]
 
 //==============================================================================
-ParamDialog::ParamDialog(Controllers &controllers)
+ParamDialog::ParamDialog ()
 {
-    pitchRangeUp.reset(new DXSlider("pitchRangeUp"));
-    addAndMakeVisible(pitchRangeUp.get());
-    pitchRangeUp->setExplicitFocusOrder(1);
-    pitchRangeUp->setRange(0, 48, 1);
-    pitchRangeUp->setSliderStyle(juce::Slider::RotaryVerticalDrag);
-    pitchRangeUp->setTextBoxStyle(juce::Slider::TextBoxLeft, false, 80, 20);
-    pitchRangeUp->addListener(this);
-    pitchRangeUp->setBounds(168, 16, 72, 24);
+    //[Constructor_pre] You can add your own custom stuff here..
+    //[/Constructor_pre]
 
-    pitchRangeUp->setValue(controllers.values_[kControllerPitchRangeUp], juce::dontSendNotification);
-    pitchRangeDn.reset(new DXSlider("pitchRangeDn"));
-    addAndMakeVisible(pitchRangeDn.get());
-    pitchRangeDn->setExplicitFocusOrder(2);
-    pitchRangeDn->setRange(0, 48, 1);
-    pitchRangeDn->setSliderStyle(juce::Slider::RotaryVerticalDrag);
-    pitchRangeDn->setTextBoxStyle(juce::Slider::TextBoxLeft, false, 80, 20);
-    pitchRangeDn->addListener(this);
-    pitchRangeDn->setBounds(264, 16, 72, 24);
+    pitchRangeDn.reset (new DXSlider ("pitchRangeDn"));
+    addAndMakeVisible (pitchRangeDn.get());
+    pitchRangeDn->setExplicitFocusOrder (2);
+    pitchRangeDn->setRange (0, 48, 1);
+    pitchRangeDn->setSliderStyle (juce::Slider::RotaryVerticalDrag);
+    pitchRangeDn->setTextBoxStyle (juce::Slider::TextBoxLeft, false, 80, 20);
+    pitchRangeDn->addListener (this);
 
-    pitchRangeDn->setValue(controllers.values_[kControllerPitchRangeDn], juce::dontSendNotification);
-    pitchStep.reset(new DXSlider("pitchStep"));
-    addAndMakeVisible(pitchStep.get());
-    pitchStep->setExplicitFocusOrder(3);
-    pitchStep->setRange(0, 12, 1);
-    pitchStep->setSliderStyle(juce::Slider::RotaryVerticalDrag);
-    pitchStep->setTextBoxStyle(juce::Slider::TextBoxLeft, false, 80, 20);
-    pitchStep->addListener(this);
-    pitchStep->setBounds(264, 56, 72, 24);
+    pitchRangeDn->setBounds (264, 16, 72, 24);
 
-    pitchStep->setValue(controllers.values_[kControllerPitchStep], juce::dontSendNotification);
+    pitchStep.reset (new DXSlider ("pitchStep"));
+    addAndMakeVisible (pitchStep.get());
+    pitchStep->setExplicitFocusOrder (3);
+    pitchStep->setRange (0, 12, 1);
+    pitchStep->setSliderStyle (juce::Slider::RotaryVerticalDrag);
+    pitchStep->setTextBoxStyle (juce::Slider::TextBoxLeft, false, 80, 20);
+    pitchStep->addListener (this);
+
+    pitchStep->setBounds (264, 56, 72, 24);
 
     sysexIn.reset (new juce::ComboBox ("sysexIn"));
     addAndMakeVisible (sysexIn.get());
@@ -321,6 +313,16 @@ ParamDialog::ParamDialog(Controllers &controllers)
                               juce::Image(), 1.000f, juce::Colour (0x00000000));
     transposeHelp->setBounds (500, 245, 20, 20);
 
+    pitchRangeUp.reset (new DXSlider ("pitchRangeUp"));
+    addAndMakeVisible (pitchRangeUp.get());
+    pitchRangeUp->setExplicitFocusOrder (1);
+    pitchRangeUp->setRange (0, 48, 1);
+    pitchRangeUp->setSliderStyle (juce::Slider::RotaryVerticalDrag);
+    pitchRangeUp->setTextBoxStyle (juce::Slider::TextBoxLeft, false, 80, 20);
+    pitchRangeUp->addListener (this);
+
+    pitchRangeUp->setBounds (168, 16, 72, 24);
+
     scalingFactor.reset (new juce::ComboBox ("scalingFactor"));
     addAndMakeVisible (scalingFactor.get());
     scalingFactor->setExplicitFocusOrder (5);
@@ -434,7 +436,12 @@ ParamDialog::ParamDialog(Controllers &controllers)
 
     setWantsKeyboardFocus(true);
     startTimer(100);
-    //[/Constructor]
+    
+    // Synchronize UI elements with per-instance state
+    pitchRangeUp->setValue(controllers.pitchRangeUp, juce::dontSendNotification);
+    pitchRangeDn->setValue(controllers.pitchRangeDn, juce::dontSendNotification);
+    pitchStep->setValue(controllers.pitchStep, juce::dontSendNotification);
+//[/Constructor]
 }
 
 ParamDialog::~ParamDialog()

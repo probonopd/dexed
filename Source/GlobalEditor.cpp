@@ -716,13 +716,12 @@ void GlobalEditor::buttonClicked (juce::Button* buttonThatWasClicked)
 
 void GlobalEditor::bind(DexedAudioProcessorEditor *edit) {
     processor = edit->processor;
-    // Only bind parameters that are actual members of DexedAudioProcessor
-    processor->algo->bind(algo.get());
-    processor->lfoRate->bind(lfoSpeed.get());
-    processor->lfoDelay->bind(lfoDelay.get());
-    processor->lfoWaveform->bind(lfoType.get());
-    processor->lfoAmpDepth->bind(lfoAmDepth.get());
-    processor->lfoPitchDepth->bind(lfoPitchDepth.get());
+	processor->algo->bind(algo.get());
+	processor->lfoRate->bind(lfoSpeed.get());
+	processor->lfoDelay->bind(lfoDelay.get());
+	processor->lfoWaveform->bind(lfoType.get());
+	processor->lfoAmpDepth->bind(lfoAmDepth.get());
+	processor->lfoPitchDepth->bind(lfoPitchDepth.get());
     processor->lfoSync->bind(lfoSync.get());
     processor->oscSync->bind(oscSync.get());
     processor->transpose->bind(transpose.get());
